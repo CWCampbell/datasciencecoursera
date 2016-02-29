@@ -79,7 +79,7 @@ The steps in the script were as follows. Line numbers indicate the code section 
 
 The script requires the use of the R packages *dplyr* and *stringi*. It creates a new directory and sets that as working directory. The URL from which data is taken is identified and stored as a variable. The data is downloaded to the working directory, as is the date on which it was downloaded. The script then unzips the .zip archive to obtain a list of files ("dataset_list").  
 
-**TASK 1. Merge training and test sets to create one data set**  
+**TASK 1. Merge training and test sets to create one data set.**  
 *Lines 17-37*  
 
 All relevant data files are read into the system and named. 
@@ -107,7 +107,7 @@ Intermediate subsets and "fullset" dataset are removed to keep the environment u
 
 Again, as a check, there is an optional command here: dplyr::glimpse(main_dataset). In the current script it has been formatted as a comment and thus not run.
 
-**TASK 3. Use descriptive activity names to name the activities in the data set**  
+**TASK 3. Use descriptive activity names to name the activities in the data set.**  
 *Lines 51-57*  
 
 Thus far activities have been identified via index numbers, rather than with human-readable labels. Now, applicable activity label names and their index numbers are read into a table and stored as the data frame "activities." The activity names are factors. The data in the first column of "main_dataset" are reclassed as factors as well.  
