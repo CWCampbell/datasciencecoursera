@@ -8,7 +8,7 @@ output: html_document
 
 ###Description of Original Dataset
 
-In the original dataset, found [here]("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"), a group of researchers took various measurements to record the movements of a Samsung smartphone. (See [ReadMe file](put url of github version here) for more details.) Linear and angular velocity ware recorded via accelerometer and gyroscope triaxial signals. 
+In the original dataset, found [here]("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"), a group of researchers took various measurements to record the movements of a Samsung smartphone. (See [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd) for more details.) Linear and angular velocity ware recorded via accelerometer and gyroscope triaxial signals. 
 
 In the original dataset, variables capturing these raw signals are named tAcc-XYZ and tGyro-XYZ. The acceleration signal has been separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ). Throughout the dataset, X, Y, or Z in variable names denotes triaxial signals in the X, Y or Z direction.
 
@@ -149,7 +149,7 @@ Our dataset (now stored as "tidy_dataset") meets these requirements as follows:
 
 3. A "type of observational unit" consists of an observation, a variable, and a value; together, the three constitute a table (see Wickham, p. 10). Here, each subject-activity combination represents an observation; each measurement pertains to a unique variable (see point 1, above); and there is only one value at the row-column intersection of observation and variable.
 
-For code that will read "tidy_dataset" from the working directory and then open it, see the final section of the [ReadMe file](put url of github version here).
+For code that will read "tidy_dataset" from the working directory and then open it, see the final section of the [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd).
 
 
 ^1^doi:http://dx.doi.org/10.18637/jss.v059.i10
