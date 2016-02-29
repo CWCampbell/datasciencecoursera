@@ -151,4 +151,4 @@ Our dataset (now stored as "tidy_dataset") meets these requirements as follows:
 
 For code that will read "tidy_dataset" from the working directory and then open it, see the final section of the [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd).
 
-*doi:http://dx.doi.org/10.18637/jss.v059.i10
+* doi:http://dx.doi.org/10.18637/jss.v059.i10
