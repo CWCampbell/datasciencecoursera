@@ -132,7 +132,7 @@ As a check, there is an optional command here: duplicated(names(main_dataset)). 
 
 The script groups all rows from "main_dataset" by activity and then subject. For each activity-subject group within the data frame, the script applies the mean() function to all columns. The script then writes the resulting data frame -- with the average of each variable, sorted by subject-activity combination -- to a text file in the working directory.
 
-This creates a tidy dataset. Hadley Wickham, in [his paper "Tidy Data"](https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf) (*Journal of Statistical Software*, 59(10), 1 - 23)*, defines "tidy" data as having three defining characteristics.  
+This creates a tidy dataset. Hadley Wickham, in [his paper "Tidy Data"](https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf) (*Journal of Statistical Software*, 59(10), 1 - 23), defines "tidy" data as having three defining characteristics.  
 
 1. Each variable forms a column.  
 2. Each observation forms a row.  
@@ -151,4 +151,3 @@ Our dataset (now stored as "tidy_dataset") meets these requirements as follows:
 
 For code that will read "tidy_dataset" from the working directory and then open it, see the final section of the [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd).
 
-* doi:http://dx.doi.org/10.18637/jss.v059.i10
