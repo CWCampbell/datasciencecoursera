@@ -1,81 +1,153 @@
 ---
-title: "Final Project ReadMe"
+title: "Final Project README"
 author: "Caren Weiner Campbell"
 date: "February 27, 2016"
-output: 
-  html_document: 
-    keep_md: yes
+output: html_document
 ---
+***
 
----------
+###Description of Original Dataset
 
-**Data Description:** Recordings of 30 subjects performing activities of daily living (ADL) while carrying a waist-mounted smartphone with embedded inertial sensors.  
+In the original dataset, found [here]("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"), a group of researchers took various measurements to record the movements of a Samsung smartphone. (See [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd) for more details.) Linear and angular velocity ware recorded via accelerometer and gyroscope triaxial signals. 
 
-**Number of Instances:** 10299  
+In the original dataset, variables capturing these raw signals are named tAcc-XYZ and tGyro-XYZ. The acceleration signal has been separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ). Throughout the dataset, X, Y, or Z in variable names denotes triaxial signals in the X, Y or Z direction.
 
-**Number of Attributes:** 561  
+Subsequently, the body linear acceleration and angular velocity were derived in time, in order to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). The researchers then, using the Euclidean norm, calculated the magnitude of these three-dimensional signals (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
-**Date Provided:** 2012-12-10  
+Finally, the researchers applied a Fast Fourier Transform (FFT) to some of these signals to derive frequency data (fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag). Using these signals, the researchers estimated variables of the feature vector for each pattern. 
 
-**Data Source:** Jorge L. Reyes-Ortiz(1,2), Davide Anguita(1), Alessandro Ghio(1), Luca Oneto(1) and Xavier Parra(2)  
+The full set of variable names is as follows: 
 
-*1 - Smartlab - Non-Linear Complex Systems Laboratory  
-DITEN - Università degli Studi di Genova, Genoa (I-16145), Italy.  
-2 - CETpD - Technical Research Centre for Dependency Care and Autonomous Living  
-Universitat Politècnica de Catalunya (BarcelonaTech). Vilanova i la Geltrú (08800), Spain     activityrecognition "@" smartlab.ws*
++ tBodyAcc-XYZ
++ tGravityAcc-XYZ
++ tBodyAccJerk-XYZ
++ tBodyGyro-XYZ
++ tBodyGyroJerk-XYZ
++ tBodyAccMag
++ tGravityAccMag
++ tBodyAccJerkMag
++ tBodyGyroMag
++ tBodyGyroJerkMag
++ fBodyAcc-XYZ
++ fBodyAccJerk-XYZ
++ fBodyGyro-XYZ
++ fBodyAccMag
++ fBodyAccJerkMag
++ fBodyGyroMag
++ fBodyGyroJerkMag
 
+The variables that were estimated from these signals are: 
 
-**Dataset Information:**  
-Experiments were carried out by 30 volunteers between the ages of 19 and 48. Each person performed six activities (walking, walking upstairs, walking downstairs, sitting, standing, laying) wearing a smartphone (Samsung Galaxy S II) on the waist.   
++ mean(): Mean value
++ std(): Standard deviation
++ mad(): Median absolute deviation 
++ max(): Largest value in array
++ min(): Smallest value in array
++ sma(): Signal magnitude area
++ energy(): Energy measure: sum of the squares divided by the number of values 
++ iqr(): Interquartile range 
++ entropy(): Signal entropy
++ arCoeff(): Autorregresion coefficients with Burg order equal to 4
++ correlation(): Correlation coefficient between two signals
++ maxInds(): Index of the frequency component with largest magnitude
++ meanFreq(): Weighted average of the frequency components to obtain a mean frequency
++ skewness(): Skewness of the frequency domain signal 
++ kurtosis(): Kurtosis of the frequency domain signal 
++ bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window
++ angle(): Angle between two vectors
 
-Using the phone's embedded accelerometer and gyroscope, the researchers captured triaxial linear acceleration and triaxial angular velocity at a constant rate of 50Hz. 
+Additional vectors were obtained by averaging the signals in a signal window sample. These are used on the angle() variable:
 
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). 
++ gravityMean
++ tBodyAccMean
++ tBodyAccJerkMean
++ tBodyGyroMean
++ tBodyGyroJerkMean
 
-The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low-frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. 
+###Description of Selected Subset
 
-From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
+For this project, mean(), std(), and meanFreq() variables were extracted and assembled into a smaller dataset called "main_dataset."
 
-The full dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
+Certain variables were excluded even though their names include the term "Mean": gravityMean, tBodyAccMean, tBodyAccJerkMean, tBodyGyroMean, and tBodyGyroJerkMean. These were excluded because they do not represent final measurements; they are merely averages taken from window samples and are used to calculate the angle() variable.
 
-**Files in Dataset:**  
+###How the Script Extracts and Cleans the Selected Subset
 
-+ features_info.txt: Information about the variables used on the feature vector  
-+ features.txt: List of all features  
-+ activity_labels.txt: Links the class labels with their activity names  
-+ train/X_train.txt: Training set  
-+ train/y_train.txt: Training labels  
-+ test/X_test.txt: Test set  
-+ test/y_test.txt: Test labels  
+The steps in the script were as follows. Line numbers indicate the code section under discussion.
 
-The following files are available for the train and test data. Their descriptions are equivalent. 
-        
-+ subject_train.txt: Each row identifies the subject who performed the activity for each window sample. The range of this variable is from 1 to 30. 
+**TASK 0. Preparatory work**   
+*Lines 1-15*  
 
-+ total_acc_x_train.txt: The acceleration signal from the smartphone accelerometer X axis in standard gravity units (*g*). The same description applies for the total_acc_y_train.txt and total_acc_z_train.txt files for the Y and Z axes. 
+The script requires the use of the R packages *dplyr* and *stringi*. It creates a new directory and sets that as working directory. The URL from which data is taken is identified and stored as a variable. The data is downloaded to the working directory, as is the date on which it was downloaded. The script then unzips the .zip archive to obtain a list of files ("dataset_list").  
 
-+ body_acc_x_train.txt: The body acceleration signal obtained by subtracting the gravity from the total acceleration. 
+**TASK 1. Merge training and test sets to create one data set**  
+*Lines 17-37*  
 
-+ body_gyro_x_train.txt: The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
+All relevant data files are read into the system and named. 
 
-**Variables for Each Record in the Dataset:**  
+Three intermediate data frames are created:  
 
-+ Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration  
-+ Triaxial angular velocity from the gyroscope  
-+ A 561-feature vector with time and frequency domain variables  
-+ Its activity label  
-+ An identifier of the subject who carried out the experiment  
+1. Variable-value measurement data from the training set and the test set are combined into one data frame.   
+2. Label data from the training set and the test set are combined into one data frame.  
+3. Subject ID data from the training set and the test set are combined into one data frame.  
 
-**Notes on Units and Scale:**  
+These three data frames are bound side-by-side into one data frame called "fullset."   
 
-+ Features are normalized and bounded within [-1,1].  
-+ The units used for the accelerations (total and body) are *g*'s (gravity of earth = 9.80665 m/sec^2^).  
-+ The gyroscope units are radians/second.   
+The intermediate data frames are then removed to keep the environment uncluttered.  
 
-**Opening the Tidy Dataset:**
+The column names are extracted, combined with names for the label and subject columns, and applied.
 
-This function will read the file from the working directory and then open it.
+As a check, there is an optional command here: dplyr::glimpse(fullset). In the current script it has been formatted as a comment and thus not run.
 
-<pre>tidy_dataset2  <- read.table("./tidy_dataset.txt", header=TRUE)  
-tidy_dataset2
-</pre>
+**TASK 2. Extract only the measurements on the mean and standard deviation for each measurement.**  
+*Lines 41-49*  
+
+Columns with the relevant data, as identified by names containing the strings "mean()" and "std()", are located. Using the index numbers for those columns, a subset is extracted from "fullset" and stored under the name "main_dataset."
+
+Intermediate subsets and "fullset" dataset are removed to keep the environment uncluttered.
+
+Again, as a check, there is an optional command here: dplyr::glimpse(main_dataset). In the current script it has been formatted as a comment and thus not run.
+
+**TASK 3. Use descriptive activity names to name the activities in the data set**  
+*Lines 51-57*  
+
+Thus far activities have been identified via index numbers, rather than with human-readable labels. Now, applicable activity label names and their index numbers are read into a table and stored as the data frame "activities." The activity names are factors. The data in the first column of "main_dataset" are reclassed as factors as well.  
+
+The activity names from "activities" are then assigned to the factor levels (i.e., the matching index numbers) in "main_dataset."
+
+Component files that are no longer needed are removed to keep the environment uncluttered.
+
+Again, as a check, there is an optional command here: main_dataset[1:50,1:5]. This will print to the console the first five columns and the first 50 rows of that data frame. In the current script this command has been formatted as a comment and thus not run.  
+
+**TASK 4. Appropriately label the data set with descriptive variable names.**  
+*Lines 59-70*  
+
+The first function call renames the "main_dataset" variables by expanding the abbreviations to human-readable words. (For example, "Acc" is expanded to (i.e., replaced by) "acceleration", and "Mag" by "signalMagnitude.") 
+
+The second function call cleans up duplicated strings within variable names, as they are not needed for differentiating between variables. The third function confirms that all variable names remain unique.  
+
+As a check, there is an optional command here: duplicated(names(main_dataset)). This should return FALSE, indicating that all variable names remain unique. In the current script this command has been formatted as a comment and thus not run.  
+
+**TASK 5. From the data set in step 4, create a second, independent tidy dataset with the average of each variable for each activity and each subject.**  
+*Lines 72-77*  
+
+The script groups all rows from "main_dataset" by activity and then subject. For each activity-subject group within the data frame, the script applies the mean() function to all columns. The script then writes the resulting data frame -- with the average of each variable, sorted by subject-activity combination -- to a text file in the working directory.
+
+This creates a tidy dataset. Hadley Wickham, in [his paper "Tidy Data"](https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf) (*Journal of Statistical Software*, 59(10), 1 - 23), defines "tidy" data as having three defining characteristics.  
+
+1. Each variable forms a column.  
+2. Each observation forms a row.  
+3. Each type of observational unit forms a table.  
+
+Our dataset (now stored as "tidy_dataset") meets these requirements as follows:
+
+1. Each variable is a unique combination of  
++ fixed characteristics (e.g., domain classification, such as time and frequency),  
++ measured attributes (e.g., acceleration, angular velocity, jerk, and signal strength), and   
++ calculation based on those measurements (e.g., mean and standard deviation). 
+
+2. Each observation represents one subject (of 30) executing one activity (of 6). This would lead us to expect one row for each combination of subject and activity: 30 * 6 = 180. As expected, "tidy_dataset" has 180 rows.  
+
+3. A "type of observational unit" consists of an observation, a variable, and a value; together, the three constitute a table (see Wickham, p. 10). Here, each subject-activity combination represents an observation; each measurement pertains to a unique variable (see point 1, above); and there is only one value at the row-column intersection of observation and variable.
+
+For code that will read "tidy_dataset" from the working directory and then open it, see the final section of the [ReadMe file](https://github.com/CWCampbell/datasciencecoursera/blob/master/README.Rmd).
+
