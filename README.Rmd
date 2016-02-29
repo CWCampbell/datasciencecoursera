@@ -8,7 +8,7 @@ output: html_document
 
 ###Description of Original Dataset
 
-In the original dataset, found [here]("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"), a group of researchers took various measurements to record the movements of a Samsung smartphone. (See [Codebook](https://github.com/CWCampbell/datasciencecoursera/blob/master/Codebook.Rmd) for more details.) Linear and angular velocity ware recorded via accelerometer and gyroscope triaxial signals. 
+In the original dataset, found [here]("https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"), a group of researchers took various measurements to record the movements of a Samsung smartphone. (See [codebook](https://github.com/CWCampbell/datasciencecoursera/blob/master/Codebook.Rmd) for more details.) Linear and angular velocity ware recorded via accelerometer and gyroscope triaxial signals. 
 
 In the original dataset, variables capturing these raw signals are named tAcc-XYZ and tGyro-XYZ. The acceleration signal has been separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ). Throughout the dataset, X, Y, or Z in variable names denotes triaxial signals in the X, Y or Z direction.
 
